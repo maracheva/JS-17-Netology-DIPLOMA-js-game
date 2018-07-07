@@ -24,11 +24,21 @@ class Vector {
 
 //класс Actor позволит контролировать все движущиеся объекты на игровом поле и контролировать их пересечение.
 class Actor {
-    constructor(position = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
+    constructor(position, size, speed) {
+        if (!pos) {
+            pos = new Vector(0, 0);
+        }
+        if (!size) {
+            size = new Vector(1, 1);
+        }
+        if (!speed) {
+            speed = new Vector(0, 0);
+        }
+
         if (!(position instanceof Vector) ||
         !(size instanceof Vector) ||
         !(speed instanceof Vector)) {
-            throw new Error(`TypeERROR: The constructor must have an object of type Vector.`);
+            throw new Error(`Ошибка: Конструктор должен иметь объект типа Vector.`);
         }
         this.pos = position;
         this.size = size;
@@ -38,17 +48,27 @@ class Actor {
     act() {}
     // свойства только для чтения (неизменяемые) left, top, right, bottom, 
     // в которых установлены границы объекта по осям X и Y с учетом его расположения и размера.
-    get left() {return this.pos.x;}
-    get top() {return this.pos.y;}
-    get right() {return this.pos.x + this.size.x;}
-    get bottom() {return this.pos.y + this.size.y;}
+    get left() {
+        return this.pos.x;
+    }
+    get top() {
+        return this.pos.y;
+    }
+    get right() {
+        return this.pos.x + this.size.x;
+    }
+    get bottom() {
+        return this.pos.y + this.size.y;
+    }
     // свойство type — строку со значением actor, только для чтения.
-    get type() {return 'actor';}
+    get type() {
+        return 'actor';
+    }
 
     // Метод проверяет, пересекается ли текущий объект с переданным объектом.
     isIntersect(otherActor) {
         if (!(otherActor instanceof Actor) || !otherActor) {
-            throw new Error('TypeERROR: Must have an object of type Actor.');
+            throw new Error('Ошибка: Должен быть передан объект типа Actor.');
         } 
         // Объект не пересекается сам с собой.
         if (otherActor === this) {
@@ -86,7 +106,7 @@ class Level {
     // Определяет, расположен ли какой-то другой движущийся объект в переданной позиции
     actorAt(actor) {
         if (!(actor instanceof Actor) || !actor) {
-            throw new Error('TypeERROR: Must have an object of type Actor.');
+            throw new Error('Ошибка: Должен быть передан объект типа Actor.');
         }
         return this.actors.find(el => el.isIntersect(actor));
     }
@@ -96,7 +116,7 @@ class Level {
         if (!(position instanceof Vector) 
             || !(size instanceof Vector) 
             || !position || !size) {
-            throw new Error('TypeERROR: Must have an object of type  Vector.');
+            throw new Error('Ошибка: Должен быть передан объект типа Vector.');
         }
         // Будем считать, что игровое поле слева, сверху и справа огорожено стеной и снизу у него смертельная лава.
         const leftObstacle = Math.floor(position.x);
@@ -150,9 +170,9 @@ class Level {
                 this.status = 'won';
             }
             return;
-            }
         }
     }
+}
     
 // Парсер уровня
 class LevelParser {
