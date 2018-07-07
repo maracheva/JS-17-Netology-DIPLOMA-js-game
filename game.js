@@ -67,19 +67,19 @@ class Actor {
 
     // Метод проверяет, пересекается ли текущий объект с переданным объектом.
     isIntersect(otherActor) {
-        if (!(otherActor instanceof Actor) || !otherActor) {
+        if (!(otherActor instanceof Actor)) {
             throw new Error('Ошибка: Должен быть передан объект типа Actor.');
         } 
         // Объект не пересекается сам с собой.
         if (otherActor === this) {
             return false;
         }
-    return this.right > otherActor.left && 
-          this.left < otherActor.right && 
-          this.top < otherActor.bottom && 
-          this.bottom > otherActor.top
+        return this.right > otherActor.left && 
+            this.left < otherActor.right && 
+            this.top < otherActor.bottom && 
+            this.bottom > otherActor.top
+        }
     }
-}
 
 // Игровое поле 
 // grid - сетка игрового поля, actors - список движущихся объектов игрового поля 
@@ -105,7 +105,7 @@ class Level {
     }
     // Определяет, расположен ли какой-то другой движущийся объект в переданной позиции
     actorAt(actor) {
-        if (!(actor instanceof Actor) || !actor) {
+        if (!(actor instanceof Actor)) {
             throw new Error('Ошибка: Должен быть передан объект типа Actor.');
         }
         return this.actors.find(el => el.isIntersect(actor));
@@ -114,8 +114,7 @@ class Level {
     // метод определяет препятствия в указанном месте, контролирует выход объекта за границы игрового поля.
     obstacleAt(position, size) {
         if (!(position instanceof Vector) 
-            || !(size instanceof Vector) 
-            || !position || !size) {
+            || !(size instanceof Vector) ) {
             throw new Error('Ошибка: Должен быть передан объект типа Vector.');
         }
         // Будем считать, что игровое поле слева, сверху и справа огорожено стеной и снизу у него смертельная лава.
