@@ -24,7 +24,7 @@ class Vector {
 
 //класс Actor позволит контролировать все движущиеся объекты на игровом поле и контролировать их пересечение.
 class Actor {
-    constructor(position, size, speed) {
+    constructor(pos, size, speed) {
         if (!pos) {
             pos = new Vector(0, 0);
         }
@@ -35,12 +35,12 @@ class Actor {
             speed = new Vector(0, 0);
         }
 
-        if (!(position instanceof Vector) ||
+        if (!(pos instanceof Vector) ||
         !(size instanceof Vector) ||
         !(speed instanceof Vector)) {
             throw new Error(`Ошибка: Конструктор должен иметь объект типа Vector.`);
         }
-        this.pos = position;
+        this.pos = pos;
         this.size = size;
         this.speed = speed;
     }
@@ -112,16 +112,16 @@ class Level {
     }
 
     // метод определяет препятствия в указанном месте, контролирует выход объекта за границы игрового поля.
-    obstacleAt(position, size) {
-        if (!(position instanceof Vector) 
+    obstacleAt(pos, size) {
+        if (!(pos instanceof Vector) 
             || !(size instanceof Vector) ) {
             throw new Error('Ошибка: Должен быть передан объект типа Vector.');
         }
         // Будем считать, что игровое поле слева, сверху и справа огорожено стеной и снизу у него смертельная лава.
-        const leftObstacle = Math.floor(position.x);
-        const rightObstacle = Math.ceil(position.x + size.x);
-        const topObstacle = Math.floor(position.y);
-        const bottomObstacle = Math.ceil(position.y + size.y);
+        const leftObstacle = Math.floor(pos.x);
+        const rightObstacle = Math.ceil(pos.x + size.x);
+        const topObstacle = Math.floor(pos.y);
+        const bottomObstacle = Math.ceil(pos.y + size.y);
         // Если описанная двумя векторами область выходит за пределы игрового поля, то
         // вернет wall
         if (leftObstacle < 0 
@@ -186,8 +186,8 @@ class LevelParser {
       return this.obj[symb];
     }
     obstacleFromSymbol(symb) {
-      if (!sign) return undefined;
-      return symbolObstacle[sign];    
+      if (!symb) return undefined;
+      return symbolObstacle[symb];    
     }
     // Принимает массив строк и преобразует его в массив массивов, в ячейках которого хранится 
     // либо строка, соответствующая препятствию, либо undefined.
